@@ -28,9 +28,10 @@ app.post('/todo', (req, res) => {
 app.get('/todo', (req, res) => {
     Todo.find().then((todos) => {
         res.send({ todos });
+        // res.send(`<form method=post action="todo"><input type="text" name=text id=text><input type=submit></form>${todos}`);
     }, (e) => {
-            res.status(400)
-                .send(e);
+        res.status(400)
+            .send(e);
     });
 });
 
