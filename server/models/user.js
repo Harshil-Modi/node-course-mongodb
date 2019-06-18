@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var UsersConstructor = mongoose.model(`Users`, {
+var UsersConstructor = mongoose.model(`users`, {
     emailid: {
         type: String,
         trim: true,
@@ -8,6 +8,10 @@ var UsersConstructor = mongoose.model(`Users`, {
         required: true
     }
 });
+
+var u = new UsersConstructor();
+
+// u.find({}).toArray().then((docs) => console.log(docs), (e) => console.log(e));
 
 module.exports = {
     User: UsersConstructor

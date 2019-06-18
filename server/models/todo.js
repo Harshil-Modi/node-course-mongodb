@@ -17,6 +17,8 @@ var TodoCon = mongoose.model(`Todos`, {
     }
 });
 
+//new TodoCon().find().toArray().then();
+
 module.exports = {
     Todo: TodoCon
 };
