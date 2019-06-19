@@ -42,11 +42,11 @@ app.get('/todo/:id', (req, res) => {
     }
     Todo.findById(id).then((docTodo) => {
         if (!docTodo) {
-            res.status(404).send({ 'error': 'Not found' });
+            return res.status(404).send({ 'error': 'Not found' });
         }
         res.send({ docTodo });
     }, (e) => {
-        res.status(400).send(`Bad request:${e}`);
+        res.status(400).send();
     });
 });
 
