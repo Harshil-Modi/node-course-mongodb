@@ -1,12 +1,13 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const { ObjectId } = require('mongodb');
 
-var { mongoose } = require('./db/mongoose');
-var { User } = require('./models/user');
-var { Todo } = require('./models/todo');
+const { mongoose } = require('./db/mongoose');
+const { User } = require('./models/user');
+const { Todo } = require('./models/todo');
 
-var app = express();
-var port = 3000;
+const app = express();
+const port = 3000;
 
 app.use(bodyParser.json());
 
@@ -28,10 +29,24 @@ app.post('/todo', (req, res) => {
 app.get('/todo', (req, res) => {
     Todo.find().then((todos) => {
         res.send({ todos });
-        // res.send(`<form method=post action="todo"><input type="text" name=text id=text><input type=submit></form>${todos}`);
     }, (e) => {
         res.status(400)
             .send(e);
+    });
+});
+
+app.get('/todo/:id', (req, res) => {
+    var id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+        res.status(400).send(`Invalid id`);
+    }
+    Todo.findById(id).then((docTodo) => {
+        if (!docTodo) {
+            res.status(404).send({ 'error': 'Not found' });
+        }
+        res.send({ docTodo });
+    }, (e) => {
+        res.status(400).send(`Bad request:${e}`);
     });
 });
 
