@@ -53,11 +53,11 @@ app.get('/todo/:id', (req, res) => {
 app.delete('/todo/:id', (req, res) => {
     var id = req.params.id;
     if (!ObjectId.isValid(id)) {
-        return res.status(400).send(`Invalid id`);
+        return res.status(400).send({ "error": "invalid id" });
     }
     Todo.findByIdAndRemove(id).then((deletedDoc) => {
         if (!deletedDoc) {
-            return res.status(400).send({ "error": "Could not delete" });
+            return res.status(404).send({ "error": "Could not delete" });
         }
         res.status(200).send({ deletedDoc });
     }, (err) => {
