@@ -38,7 +38,7 @@ app.get('/todo', (req, res) => {
 app.get('/todo/:id', (req, res) => {
     var id = req.params.id;
     if (!ObjectId.isValid(id)) {
-        res.status(400).send(`Invalid id`);
+        return res.status(400).send(`Invalid id`);
     }
     Todo.findById(id).then((docTodo) => {
         if (!docTodo) {
@@ -48,6 +48,23 @@ app.get('/todo/:id', (req, res) => {
     }, (e) => {
         res.status(400).send();
     });
+});
+
+app.delete('/todo/:id', (req, res) => {
+    var id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).send(`Invalid id`);
+    }
+    Todo.findByIdAndRemove(id).then((deletedDoc) => {
+        if (!deletedDoc) {
+            return res.status(400).send({ "error": "Could not delete" });
+        }
+        res.status(200).send({ deletedDoc });
+    }, (err) => {
+        console.log(err);
+        res.status(400).send();
+    });
+
 });
 
 app.listen(port, () => {
